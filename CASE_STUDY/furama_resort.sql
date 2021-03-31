@@ -478,22 +478,22 @@ select a.agreement_id, tos.type_of_service, es.extra_service_name, nou.number_of
 
 /* ------------------------- Task 15 ------------------------- */
 
-drop view if exists number_of_contacts_in_2018_of_employee;
-create view number_of_contacts_in_2018_of_employee as
-	select employee_id, count(employee_id) as number_of_contacts
-     from agreements
-     where year(starting_date) = 2018
-     group by employee_id
-     order by count(employee_id);
+DROP VIEW IF EXISTS number_of_contacts_in_2018_of_employee;
+CREATE VIEW number_of_contacts_in_2018_of_employee AS
+	SELECT employee_id, COUNT(employee_id) AS number_of_contacts
+     FROM agreements
+     WHERE YEAR(starting_date) = 2018
+     GROUP BY employee_id
+     ORDER BY COUNT(employee_id);
      
-select e.employee_id, e.full_name, acl.academic_level, d.department_name,
+SELECT e.employee_id, e.full_name, acl.academic_level, d.department_name,
 	e.phone_number, e.address
-    from employees e
-		inner join academic_levels acl on acl.academic_level_id = e.academic_level_id
-        inner join departments d on d.department_id = e.department_id
-        inner join number_of_contacts_in_2018_of_employee noc on noc.employee_id = e.employee_id
-	where noc.number_of_contacts in (1, 2, 3)
-    order by employee_id;
+    FROM employees e
+		INNER JOIN academic_levels acl ON acl.academic_level_id = e.academic_level_id
+        INNER JOIN departments d ON d.department_id = e.department_id
+        INNER JOIN number_of_contacts_in_2018_of_employee noc ON noc.employee_id = e.employee_id
+	WHERE noc.number_of_contacts IN (1, 2, 3)
+    ORDER BY employee_id;
 
 /* ----------------------------------------------------------- */
 
@@ -508,4 +508,38 @@ CREATE VIEW number_of_contacts_2017_to_2019_of_employee AS
         
 DELETE FROM employees
 	WHERE employee_id NOT IN (SELECT employee_id FROM number_of_contacts_2017_to_2019_of_employee);
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 17 ------------------------- */
+DROP VIEW IF EXISTS total_use_of_platinum_customers_in_2019;
+CREATE VIEW total_use_of_platinum_customers_in_2019 AS
+	SELECT c.customer_id, c.full_name AS customer_name, toc.type_of_customer,
+		SUM(a.total_money + (es.price * da.amount)) AS total_money
+        FROM ((((customers c
+        INNER JOIN types_of_customers toc ON c.type_of_customer_id = toc.type_of_customer_id)
+        INNER JOIN agreements a ON a.customer_id = c.customer_id)
+        INNER JOIN detailed_agreements da ON da.agreement_id = a.agreement_id)
+        INNER JOIN extra_services es ON es.extra_service_id = da.extra_service_id)
+        WHERE YEAR(a.starting_date) = 2019 AND toc.type_of_customer = 'platinum'
+        GROUP BY c.customer_id
+        ORDER BY c.customer_id;
+        
+UPDATE customers
+	SET type_of_customer_id = 5
+    WHERE customer_id = ANY (
+		SELECT customer_id FROM total_use_of_platinum_customers_in_2019
+        WHERE total_money > 3000);
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 18 ------------------------- */
+insert into customers values
+	(14, 3, "Ai Nu", '1995-01-09', '011 114 114', '0901555678', 'aiNu@gmail.com', 'Quy Nhon');
+    
+insert into agreements values
+	(20, 1, 14, 1, '2015-01-01', '2015-01-05', 1000, 5000);
+
+delete customers, agreements
+	from customers
+    inner join agreements on customers.customer_id = agreements.customer_id
+    where year(agreements.starting_date) < 2016;
 /* ----------------------------------------------------------- */
