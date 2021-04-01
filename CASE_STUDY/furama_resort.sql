@@ -1,20 +1,20 @@
-create database if not exists furama_resort;
+CREATE DATABASE IF NOT EXISTS furama_resort;
 
-use furama_resort;
+USE furama_resort;
 
 /* -------- Tables related to employee -------- */
 
-drop table if exists positions;
-create table positions(
-	position_id int primary key,
-    position_name varchar(45),
-    primary key(position_id)
+DROP TABLE IF EXISTS positions;
+CREATE TABLE positions (
+    position_id INT PRIMARY KEY,
+    position_name VARCHAR(45),
+    PRIMARY KEY (position_id)
 );
 
-alter table positions
-	modify position_id int not null auto_increment;
+ALTER TABLE positions
+	MODIFY position_id INT NOT NULL AUTO_INCREMENT;
 
-insert into positions (position_name) values
+INSERT INTO positions (position_name) VALUES
     ('Information Technology'),
 	('Human Resource'),
     ('Sales'),
@@ -22,60 +22,60 @@ insert into positions (position_name) values
     ('House Keeping'),
     ('General Manager');
 
-drop table if exists academic_levels;
-create table academic_levels(
-	academic_level_id int primary key,
-    academic_level varchar(45)
+DROP TABLE IF EXISTS academic_levels;
+CREATE TABLE academic_levels (
+    academic_level_id INT PRIMARY KEY,
+    academic_level VARCHAR(45)
 );
 
-insert into academic_levels values
+INSERT INTO academic_levels VALUES
 	(1, 'High school'),
     (2, 'Bachelor'),
     (3, 'Master');
 
-drop table if exists departments;
-create table departments(
-	department_id int primary key,
-    department_name varchar(45)
+DROP TABLE IF EXISTS departments;
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(45)
 );
 
-insert into departments values
+INSERT INTO departments VALUES
 	(1, 'Purchasing'),
 	(2, 'Marketing'),
     (3, 'Maintenance'),
     (4, 'Human Resource Management'),
     (5, 'Accounting and Finance');
 
-drop table if exists employees;
-create table employees(
-	employee_id int primary key,
-    full_name varchar(50),
-    position_id int,
-    academic_level_id int,
-    department_id int,
-    birth_date date,
-    id_number varchar(45),
-    salary double,
-    phone_number varchar(45),
-    email varchar(45),
-    address varchar(100),
-    constraint fk_position
-		foreign key(position_id) references positions(position_id),
-	constraint fk_academic_level
-		foreign key(academic_level_id) references academic_levels(academic_level_id),
-	constraint fk_department
-		foreign key(department_id) references departments(department_id)
+DROP TABLE IF EXISTS employees;
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    full_name VARCHAR(50),
+    position_id INT,
+    academic_level_id INT,
+    department_id INT,
+    birth_date DATE,
+    id_number VARCHAR(45),
+    salary DOUBLE,
+    phone_number VARCHAR(45),
+    email VARCHAR(45),
+    address VARCHAR(100),
+    CONSTRAINT fk_position FOREIGN KEY (position_id)
+        REFERENCES positions (position_id),
+    CONSTRAINT fk_academic_level FOREIGN KEY (academic_level_id)
+        REFERENCES academic_levels (academic_level_id),
+    CONSTRAINT fk_department FOREIGN KEY (department_id)
+        REFERENCES departments (department_id)
 );
 
-alter table employees
-	drop foreign key fk_position;
+ALTER TABLE employees
+	DROP FOREIGN KEY fk_position;
 
-alter table employees
-	add foreign key(position_id) references positions(position_id);
+ALTER TABLE employees
+	ADD FOREIGN KEY(position_id) REFERENCES positions(position_id);
     
-delete from employees;
+DELETE FROM employees;
 
-insert into employees values
+INSERT INTO employees VALUES
 	(1, 'Kha Ho', 1, 2, 3, '1995-12-29', '123 456 789', 500.5, '0385449275', 'KhaHo@gmail.com', 'Da Nang'),
 	(2, 'Hoai Do', 2, 2, 2, '1995-09-02', '456 123 789', 600, '0385444345', 'HoaiDo@gmail.com', 'Da Nang'),
 	(3, 'Nhan Truong', 3, 2, 3, '1995-10-02', '456 789 123', 600, '0385555345', 'NhanTruong@gmail.com', 'Quang Tri'),
@@ -85,32 +85,32 @@ insert into employees values
 
 /* ------------ Tables related to customer ----------- */
 
-drop table if exists types_of_customers;
-create table types_of_customers(
-	type_of_customer_id int primary key,
-    type_of_customer varchar(45)
+DROP TABLE IF EXISTS types_of_customers;
+CREATE TABLE types_of_customers (
+    type_of_customer_id INT PRIMARY KEY,
+    type_of_customer VARCHAR(45)
 );
 
-insert into types_of_customers values
+INSERT INTO types_of_customers VALUES
 	(1, 'member'), (2, 'silver'), (3, 'gold'), (4, 'platinum'), (5, 'diamond');
 
-drop table if exists customers;
-create table customers(
-	customer_id int primary key,
-    type_of_customer_id int,
-    full_name varchar(45),
-    birth_date date,
-    id_number varchar(45),
-    phone_number varchar(45),
-    email varchar(45),
-    address varchar(45),
-    constraint fk_type_of_customer foreign key(type_of_customer_id)
-		references types_of_customers(type_of_customer_id)
+DROP TABLE IF EXISTS customers;
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    type_of_customer_id INT,
+    full_name VARCHAR(45),
+    birth_date DATE,
+    id_number VARCHAR(45),
+    phone_number VARCHAR(45),
+    email VARCHAR(45),
+    address VARCHAR(45),
+    CONSTRAINT fk_type_of_customer FOREIGN KEY (type_of_customer_id)
+        REFERENCES types_of_customers (type_of_customer_id)
 );
 
-delete from customers;
+DELETE FROM customers;
 
-insert into customers values
+INSERT INTO customers VALUES
 	(1, 1, 'Gia Dong', '1995-10-11', '011 011 011', '0911234567', 'giaDong@gmail.com', 'Da Nang'),
 	(2, 2, 'Thanh Cong', '1991-07-20', '011 012 012', '0911234765', 'thanhCong@gmail.com', 'Quang Nam'),
 	(3, 3, 'Van Thang', '1991-06-22', '011 013 013', '0911123765', 'vanThang@gmail.com', 'Da Nang'),
@@ -122,113 +122,111 @@ insert into customers values
 
 /* ------------ Tables related to service ----------- */
 
-drop table if exists types_of_rentals;
-create table types_of_rentals(
-	type_of_rental_id int primary key,
-    type_of_rental varchar(45),
-    price double
+DROP TABLE IF EXISTS types_of_rentals;
+CREATE TABLE types_of_rentals (
+    type_of_rental_id INT PRIMARY KEY,
+    type_of_rental VARCHAR(45),
+    price DOUBLE
 );
 
-insert into types_of_rentals values
+INSERT INTO types_of_rentals VALUES
 	(1, 'hours', 10),
 	(2, 'days', 20),
 	(3, 'months', 1000),
 	(4, 'years', 25000);
 
-drop table if exists types_of_services;
-create table types_of_services(
-	type_of_service_id int primary key,
-    type_of_service varchar(45)
+DROP TABLE IF EXISTS types_of_services;
+CREATE TABLE types_of_services (
+    type_of_service_id INT PRIMARY KEY,
+    type_of_service VARCHAR(45)
 );
 
-insert into types_of_services values
+INSERT INTO types_of_services VALUES
 	(1, 'villa'),
     (2, 'house'),
     (3, 'room');
 
-drop table if exists services;
-create table services(
-	service_id int primary key,
-    service_name varchar(45),
-    area double,
-    number_of_floors int,
-    largest_number_of_guests int,
-    price double,
-    type_of_rental_id int,
-    type_of_service_id int,
-    `status` varchar(45),
-    constraint fk_type_of_rental foreign key(type_of_rental_id)
-		references types_of_rentals(type_of_rental_id),
-	constraint fk_type_of_service foreign key(type_of_service_id)
-		references types_of_services(type_of_service_id)
+DROP TABLE IF EXISTS services;
+CREATE TABLE services (
+    service_id INT PRIMARY KEY,
+    service_name VARCHAR(45),
+    area DOUBLE,
+    number_of_floors INT,
+    largest_number_of_guests INT,
+    price DOUBLE,
+    type_of_rental_id INT,
+    type_of_service_id INT,
+    `status` VARCHAR(45),
+    CONSTRAINT fk_type_of_rental FOREIGN KEY (type_of_rental_id)
+        REFERENCES types_of_rentals (type_of_rental_id),
+    CONSTRAINT fk_type_of_service FOREIGN KEY (type_of_service_id)
+        REFERENCES types_of_services (type_of_service_id)
 );
 
-insert into services values
+INSERT INTO services VALUES
 	(1, 'Memory', 50, 1, 3, 250, 2, 3, 'available'),
 	(2, 'Balcony', 155, 2, 4, 100, 3, 2, 'available'),
 	(4, 'River wave villa', 230, 1, 7, 500, 1, 1, 'occupied');
     
-update services
-	set service_id = 3 where service_name = 'River wave villa';
+UPDATE services
+	SET service_id = 3 WHERE service_name = 'River wave villa';
 
 /* -------------------------------------------------- */
 
 /* ------------ Tables related to agreement ----------- */
 
-drop table if exists agreements;
-create table agreements(
-	agreement_id int primary key,
-    employee_id int,
-    customer_id int,
-    service_id int,
-    starting_date date,
-    ending_date date,
-    deposit double,
-    total_money double,
-    
-    constraint fk_employee foreign key(employee_id)
-		references employees(employee_id),
-	constraint fk_customer foreign key(customer_id)
-		references customers(customer_id),
-	constraint fk_service foreign key(service_id)
-		references services(service_id)
+DROP TABLE IF EXISTS agreements;
+CREATE TABLE agreements (
+    agreement_id INT PRIMARY KEY,
+    employee_id INT,
+    customer_id INT,
+    service_id INT,
+    starting_date DATE,
+    ending_date DATE,
+    deposit DOUBLE,
+    total_money DOUBLE,
+    CONSTRAINT fk_employee FOREIGN KEY (employee_id)
+        REFERENCES employees (employee_id),
+    CONSTRAINT fk_customer FOREIGN KEY (customer_id)
+        REFERENCES customers (customer_id),
+    CONSTRAINT fk_service FOREIGN KEY (service_id)
+        REFERENCES services (service_id)
 );
 
-insert into agreements values
+INSERT INTO agreements VALUES
 	(1, 1, 1, 1, '2021-03-20', '2021-03-25', 250, 1250),
 	(2, 2, 2, 2, '2021-03-20', '2021-04-20', 1000, 9000),
 	(3, 3, 3, 3, '2021-03-25', '2021-03-25', 100, 250);
 
-drop table if exists extra_services;
-create table extra_services(
-	extra_service_id int primary key,
-    extra_service_name varchar(45),
-    price double,
-    unit int,
-    status varchar(45)
+DROP TABLE IF EXISTS extra_services;
+CREATE TABLE extra_services (
+    extra_service_id INT PRIMARY KEY,
+    extra_service_name VARCHAR(45),
+    price DOUBLE,
+    unit INT,
+    status VARCHAR(45)
 );
 
-insert into extra_services values
+INSERT INTO extra_services VALUES
 	(1, 'Massage', 20, 30, 'available'),
     (2, 'Karaoke', 50, 10, 'available'),
     (3, 'Bike tour', 25, 30, 'near full'),
     (4, 'Stream bath', 15, 50, 'near full'),
     (5, 'Swimming pool', 7, 2, 'available');
 
-drop table if exists detailed_agreements;
-create table detailed_agreements(
-	detailed_agreement_id int primary key,
-    agreement_id int,
-    extra_service_id int,
-    amount int not null,
-    
-    constraint fk_agreement foreign key(agreement_id)
-		references agreements(agreement_id),
-	constraint fk_extra_service foreign key(extra_service_id)
-		references extra_services(extra_service_id)
+DROP TABLE IF EXISTS detailed_agreements;
+CREATE TABLE detailed_agreements (
+    detailed_agreement_id INT PRIMARY KEY,
+    agreement_id INT,
+    extra_service_id INT,
+    amount INT NOT NULL,
+    CONSTRAINT fk_agreement FOREIGN KEY (agreement_id)
+        REFERENCES agreements (agreement_id),
+    CONSTRAINT fk_extra_service FOREIGN KEY (extra_service_id)
+        REFERENCES extra_services (extra_service_id)
 );
 
-insert into detailed_agreements values
+INSERT INTO detailed_agreements VALUES
 	(1, 1, 4, 1),
     (2, 2, 3, 1),
     (3, 3, 5, 1);
@@ -236,73 +234,106 @@ insert into detailed_agreements values
 /* -------------------------------------------------- */
 
 /* ---------------------Task 2----------------------- */
-delete from employees where employee_id = 5;
+DELETE FROM employees WHERE employee_id = 5;
 
-insert into employees values
+INSERT INTO employees VALUES
 	(5, 'Khang Ho Quang Ho Quang', 4, 3, 2, '2006-09-24', '001 111 111', 750, '0901000111', 'KhangHoQuang@gmail.com', 'Binh Dinh');
 
-select employee_id, full_name, char_length(full_name) as length_of_name
-	from employees
-    where (char_length(full_name) <= 15)
-    and (full_name like 'H%' or full_name like 'T%' or full_name like 'K%');
+SELECT 
+    employee_id,
+    full_name,
+    CHAR_LENGTH(full_name) AS length_of_name
+FROM
+    employees
+WHERE
+    (CHAR_LENGTH(full_name) <= 15)
+        AND (full_name LIKE 'H%'
+        OR full_name LIKE 'T%'
+        OR full_name LIKE 'K%');
 
 /* -------------------------------------------------- */
 
 /* ---------------------Task 3----------------------- */
 
-insert into customers values
+INSERT INTO customers VALUES
 	(6, 3, 'John Wick', '1965-10-11', '011 016 016', '0901234567', 'johnWick@gmail.com', 'Ha Noi');
 
-set @min_age = 18, @max_age = 50;
+SET @min_age = 18, @max_age = 50;
 
-select customer_id, full_name, birth_date, ceil((datediff(curdate(), birth_date) / 365)) as age, address
-	from customers
-	where (ceil((datediff(curdate(), birth_date) / 365) >= @min_age) and ceil((datediff(curdate(), birth_date) / 365)) <= @max_age)
-    and (address = 'Da Nang' or address = 'Quang Tri');
+SELECT 
+    customer_id,
+    full_name,
+    birth_date,
+    @customer_age AS age,
+    address
+FROM
+    customers
+WHERE
+    ((@customer_age:=CEIL(DATEDIFF(CURDATE(), birth_date) / 365)) >= @min_age
+        AND @customer_age <= @max_age)
+        AND (address = 'Da Nang'
+        OR address = 'Quang Tri');
 
 /* -------------------------------------------------- */
 
-/* ---------------------Task 4----------------------- */
-insert into customers values
+/* --------------------- Task 4 ----------------------- */
+INSERT INTO customers VALUES
 	(7, 5, 'Duc Hau', '1997-10-10', '011 017 017', '0910012456', 'ducHau@gmail.com', 'Da Nang'),
 	(8, 5, 'Nha', '1995-03-25', '011 018 018', '0910012345', 'NhaMeo@gmail.com', 'Binh Dinh');
     
-drop table if exists bookings;
-create table bookings(
-	booking_id int auto_increment primary key,
-    customer_id int,
-    service_id int,
-    constraint fk_bookings_customer_id
-		foreign key(customer_id) references customers(customer_id),
-	constraint fk_bookings_service_id
-		foreign key(service_id) references services(service_id)
+DROP TABLE IF EXISTS bookings;
+CREATE TABLE bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    service_id INT,
+    CONSTRAINT fk_bookings_customer_id FOREIGN KEY (customer_id)
+        REFERENCES customers (customer_id),
+    CONSTRAINT fk_bookings_service_id FOREIGN KEY (service_id)
+        REFERENCES services (service_id)
 );
 
-insert into bookings (customer_id, service_id) values
+INSERT INTO bookings (customer_id, service_id) VALUES
 	(1, 1), (5, 2), (1, 2),
     (7, 3), (8, 3), (5, 1),
     (6, 2), (7, 1), (7, 2);
 
-select customer_id, count(customer_id) as number_of_bookings
-	from bookings
-    group by customer_id;
+SELECT 
+    customer_id, COUNT(customer_id) AS number_of_bookings
+FROM
+    bookings
+GROUP BY customer_id;
 
-select bookings.customer_id, customers.full_name, count(bookings.customer_id) as number_of_bookings
-	from bookings
-    inner join customers on (bookings.customer_id = customers.customer_id and customers.type_of_customer_id = 5)
-    group by bookings.customer_id
-    order by count(bookings.customer_id);
+SELECT 
+    bookings.customer_id,
+    customers.full_name,
+    COUNT(bookings.customer_id) AS number_of_bookings
+FROM
+    bookings
+        INNER JOIN
+    customers ON (bookings.customer_id = customers.customer_id
+        AND customers.type_of_customer_id = 5)
+GROUP BY bookings.customer_id
+ORDER BY COUNT(bookings.customer_id);
 /* -------------------------------------------------- */
 
 /* ---------------------Task 5----------------------- */
-select customers.customer_id, customers.full_name, types_of_customers.type_of_customer,
-	agreements.agreement_id, services.service_name, agreements.starting_date, agreements.ending_date,
-    (agreements.total_money + (extra_services.price * extra_services.unit)) as total_money
-    from (((((customers left join types_of_customers on customers.type_of_customer_id = types_of_customers.type_of_customer_id)
-		left join agreements on customers.customer_id = agreements.customer_id)
-        left join services on agreements.service_id = services.service_id)
-        left join detailed_agreements on agreements.agreement_id = detailed_agreements.agreement_id)
-        left join extra_services on detailed_agreements.extra_service_id = extra_services.extra_service_id);
+SELECT 
+    c.customer_id,
+    c.full_name,
+    toc.type_of_customer,
+    a.agreement_id,
+    s.service_name,
+    a.starting_date,
+    a.ending_date,
+    IFNULL(a.total_money, 0) + IFNULL(SUM(es.price * es.unit), 0) AS total_money
+FROM
+    (((((customers c
+    LEFT JOIN types_of_customers toc ON c.type_of_customer_id = toc.type_of_customer_id)
+    LEFT JOIN agreements a ON c.customer_id = a.customer_id)
+    LEFT JOIN services s ON a.service_id = s.service_id)
+    LEFT JOIN detailed_agreements da ON a.agreement_id = da.agreement_id)
+    LEFT JOIN extra_services es ON da.extra_service_id = es.extra_service_id)
+    GROUP BY a.agreement_id;
 /* -------------------------------------------------- */
 
 /* ------------------------- Task 6 ------------------------- */
@@ -322,19 +353,31 @@ SELECT s.service_id, s.service_name, s.area, s.price, tos.type_of_service
 	FROM ((services s
     INNER JOIN types_of_services tos ON s.type_of_service_id = tos.type_of_service_id)
     INNER JOIN agreements a ON s.service_id = a.service_id)
-	WHERE a.starting_date < '2019-01-01';
+	WHERE a.starting_date < '2019-01-01' OR a.starting_date > '2019-03-31';
     
 /*-----------------------------------------------------------*/
 
 /* ------------------------- Task 7 ------------------------- */
-select a.service_id, s.service_name, s.area, s.largest_number_of_guests,
-	s.price, tos.type_of_service
-    from ((agreements a
-    inner join services s on a.service_id = s.service_id)
-    inner join types_of_services tos on  s.type_of_service_id = tos.type_of_service_id)
-    where year(a.starting_date) = 2018 and
-    a.service_id <> all (select service_id from agreements where year(starting_date) = 2019)
-    order by s.service_id;
+SELECT 
+    a.service_id,
+    s.service_name,
+    s.area,
+    s.largest_number_of_guests,
+    s.price,
+    tos.type_of_service
+FROM
+    ((agreements a
+    INNER JOIN services s ON a.service_id = s.service_id)
+    INNER JOIN types_of_services tos ON s.type_of_service_id = tos.type_of_service_id)
+WHERE
+    YEAR(a.starting_date) = 2018
+        AND a.service_id <> ALL (SELECT 
+            service_id
+        FROM
+            agreements
+        WHERE
+            YEAR(starting_date) = 2019)
+ORDER BY s.service_id;
 /*-----------------------------------------------------------*/
 
 /* ------------------------- Task 8 ------------------------- */
@@ -357,37 +400,53 @@ SELECT full_name AS customer_name
 /* ------------------------- Task 9 ------------------------- */
 INSERT INTO agreements VALUES
 	(5, 3, 3, 3, '2021-04-25', '2021-04-27', 100, 250);
-    
-SELECT SUBSTRING(starting_date, 1, 7) AS `time`, COUNT(SUBSTRING(starting_date, 1, 7)) AS bookings_in_month
-	FROM agreements
-    WHERE starting_date LIKE '2021%'
-    GROUP BY (SUBSTRING(starting_date, 1, 7));
+
+SELECT
+    @month_year AS `time`,
+    COUNT(@month_year) AS bookings_in_month
+FROM
+    agreements
+WHERE
+    YEAR(starting_date) = 2021
+GROUP BY (@month_year:=SUBSTRING(starting_date, 1, 7))
+ORDER BY @month_year;
+
 /*-----------------------------------------------------------*/
 
 /* ------------------------- Task 10 ------------------------- */
 /*------------------------------------------------------------*/
 
 /* ------------------------- Task 11 ------------------------- */
-insert into customers values
+INSERT INTO customers VALUES
 	(11, 5, 'Thanh Tung', '1990-10-11', '011 111 111', '0901234000', 'thanhTung@gmail.com', 'Quang Ngai'),
 	(12, 5, 'Duc', '1997-02-11', '011 112 112', '0901111000', 'duc@gmail.com', 'Vinh');
     
-insert into agreements values
+INSERT INTO agreements VALUES
 	(6, 4, 11, 4, '2021-02-10', '2021-02-15', 100, 900),
 	(7, 2, 12, 3, '2021-02-10', '2021-02-13', 500, 1000);
     
-insert into detailed_agreements values
+INSERT INTO detailed_agreements VALUES
 	(4, 6, 3, 1),
     (5, 7, 4, 1);
     
-select es.extra_service_name, es.price, es.unit,
-	c.full_name as customer_name, c.customer_id, c.address, toc.type_of_customer
-	from ((((extra_services es
-	inner join detailed_agreements da on da.extra_service_id = es.extra_service_id)
-    inner join agreements a on a.agreement_id = da.agreement_id)
-    inner join customers c on c.customer_id = a.customer_id)
-    inner join types_of_customers toc on toc.type_of_customer_id = c.type_of_customer_id)
-    where toc.type_of_customer = 'diamond' and (c.address = 'Vinh' or c.address = 'Quang Ngai');
+SELECT 
+    es.extra_service_name,
+    es.price,
+    es.unit,
+    c.full_name AS customer_name,
+    c.customer_id,
+    c.address,
+    toc.type_of_customer
+FROM
+    ((((extra_services es
+    INNER JOIN detailed_agreements da ON da.extra_service_id = es.extra_service_id)
+    INNER JOIN agreements a ON a.agreement_id = da.agreement_id)
+    INNER JOIN customers c ON c.customer_id = a.customer_id)
+    INNER JOIN types_of_customers toc ON toc.type_of_customer_id = c.type_of_customer_id)
+WHERE
+    toc.type_of_customer = 'diamond'
+        AND (c.address = 'Vinh'
+        OR c.address = 'Quang Ngai');
 /*-----------------------------------------------------------*/
 
 /* ------------------------- Task 12 ------------------------- */
@@ -464,15 +523,21 @@ SELECT * FROM extra_services
 
 /* ------------------------- Task 14 ------------------------- */
 
-select a.agreement_id, tos.type_of_service, es.extra_service_name, nou.number_of_using
-	from (((((agreements a
-		inner join detailed_agreements da on a.agreement_id = da.agreement_id)
-        inner join extra_services es on es.extra_service_id = da.extra_service_id)
-        inner join services s on a.service_id = s.service_id)
-        inner join types_of_services tos on tos.type_of_service_id = s.type_of_service_id)
-        inner join number_of_using_extra_services nou on nou.extra_service_id = es.extra_service_id)
-	where number_of_using = 1
-    order by agreement_id;
+SELECT 
+    a.agreement_id,
+    tos.type_of_service,
+    es.extra_service_name,
+    nou.number_of_using
+FROM
+    (((((agreements a
+    INNER JOIN detailed_agreements da ON a.agreement_id = da.agreement_id)
+    INNER JOIN extra_services es ON es.extra_service_id = da.extra_service_id)
+    INNER JOIN services s ON a.service_id = s.service_id)
+    INNER JOIN types_of_services tos ON tos.type_of_service_id = s.type_of_service_id)
+    INNER JOIN number_of_using_extra_services nou ON nou.extra_service_id = es.extra_service_id)
+WHERE
+    number_of_using = 1
+ORDER BY agreement_id;
 
 /*-----------------------------------------------------------*/
 
@@ -498,16 +563,39 @@ SELECT e.employee_id, e.full_name, acl.academic_level, d.department_name,
 /* ----------------------------------------------------------- */
 
 /* ------------------------- Task 16 ------------------------- */
+
+INSERT INTO employees VALUES
+	(6, 'Thanh Tai', 1, 3, 3, '1995-02-03',	'001 006 006', 800,	'0901111220', 'ThanhTai@gmail.com',	'Quang Tri');
+    
+INSERT INTO agreements VALUES
+	(20, 6, 5, 5, '2021-03-31',	'2021-04-03', 100, 900);
+    
+INSERT INTO detailed_agreements VALUES
+	(13, 20, 2, 3);
+
 DROP VIEW IF EXISTS number_of_contacts_2017_to_2019_of_employee;
 CREATE VIEW number_of_contacts_2017_to_2019_of_employee AS
-	SELECT employee_id, COUNT(employee_id) AS number_of_contacts
+	SELECT employee_id, COUNT(employee_id) AS number_of_contacts_in_2017_2018
 		FROM agreements
         WHERE YEAR(starting_date) IN (2017, 2018)
         GROUP BY employee_id
         ORDER BY employee_id;
         
-DELETE FROM employees
-	WHERE employee_id NOT IN (SELECT employee_id FROM number_of_contacts_2017_to_2019_of_employee);
+DELETE agreements , detailed_agreements FROM agreements
+        INNER JOIN
+    detailed_agreements ON agreements.agreement_id = detailed_agreements.agreement_id 
+WHERE
+    agreements.employee_id NOT IN (SELECT 
+        employee_id
+    FROM
+        number_of_contacts_2017_to_2019_of_employee);
+        
+DELETE FROM employees 
+WHERE
+    employee_id NOT IN (SELECT
+        employee_id
+    FROM
+        number_of_contacts_2017_to_2019_of_employee);
 /* ----------------------------------------------------------- */
 
 /* ------------------------- Task 17 ------------------------- */
@@ -532,14 +620,160 @@ UPDATE customers
 /* ----------------------------------------------------------- */
 
 /* ------------------------- Task 18 ------------------------- */
-insert into customers values
-	(14, 3, "Ai Nu", '1995-01-09', '011 114 114', '0901555678', 'aiNu@gmail.com', 'Quy Nhon');
+INSERT INTO customers VALUES
+	(15, 3, "Ai Nu", '1995-01-09', '011 114 114', '0901555678', 'aiNu@gmail.com', 'Quy Nhon');
     
-insert into agreements values
-	(20, 1, 14, 1, '2015-01-01', '2015-01-05', 1000, 5000);
+INSERT INTO agreements VALUES
+	(23, 1, 15, 1, '2015-01-01', '2015-01-05', 1000, 5000);
 
-delete customers, agreements
-	from customers
-    inner join agreements on customers.customer_id = agreements.customer_id
-    where year(agreements.starting_date) < 2016;
+DELETE customers, agreements
+	FROM customers
+    INNER JOIN agreements ON customers.customer_id = agreements.customer_id
+    WHERE YEAR(agreements.starting_date) < 2016;
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 19 ------------------------- */
+
+DROP VIEW IF EXISTS number_of_bookings_extra_services_in_2019;
+CREATE VIEW number_of_bookings_extra_services_in_2019 AS
+    SELECT 
+        extra_service_id, SUM(amount) AS number_of_bookings_in_2019
+    FROM
+        detailed_agreements da
+            INNER JOIN
+        agreements a ON da.agreement_id = a.agreement_id
+    WHERE
+        YEAR(a.starting_date) = 2019
+    GROUP BY extra_service_id
+    ORDER BY extra_service_id;
+    
+UPDATE extra_services 
+SET 
+    price = price * 2
+WHERE
+    extra_service_id IN (SELECT 
+            extra_service_id
+        FROM
+            number_of_bookings_extra_services_in_2019
+        WHERE
+            number_of_bookings_in_2019 > 10);
+
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 20 ------------------------- */
+SELECT 
+	'Customer' AS person_type,
+    customer_id AS id,
+    full_name,
+    email,
+    phone_number,
+    birth_date,
+    address
+FROM
+    customers 
+UNION SELECT
+	'Employee' AS person_type,
+    employee_id,
+    full_name,
+    email,
+    phone_number,
+    birth_date,
+    address
+FROM
+    employees;
+    
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 21 ------------------------- */
+
+DROP VIEW IF EXISTS employee_view;
+
+CREATE VIEW employee_view AS
+    SELECT DISTINCT
+        e.employee_id, e.full_name, e.id_number, e.birth_date, e.phone_number, e.address, 
+        a.starting_date AS agreement_open_date
+    FROM
+        (employees e
+        INNER JOIN agreements a ON e.employee_id = a.employee_id)
+    WHERE
+        e.address = 'Hai Chau'
+            AND a.starting_date = '2019-12-12';
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 22 ------------------------- */
+
+UPDATE employees 
+SET 
+    address = 'Lien Chieu'
+WHERE
+    employee_id IN (SELECT
+            employee_id
+        FROM
+            employee_view);
+
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 23 ------------------------- */
+
+INSERT INTO customers VALUES
+	(14, 3, 'Quang Khang', '2006-02-06', '001 014 014', '0909014014', 'quangKhang@gmail.com', 'Binh Dinh');
+    
+INSERT INTO agreements VALUES
+	(22, 1,	14,	2, '2021-04-01', '2021-10-01', 250, 1000);
+    
+INSERT INTO detailed_agreements VALUES
+	(13, 22, 5, 3);
+
+DROP PROCEDURE IF EXISTS delete_customer;
+
+delimiter //
+CREATE PROCEDURE delete_customer(id INT)
+BEGIN
+	SET foreign_key_checks = 0;
+	DELETE agreements , detailed_agreements FROM agreements
+	INNER JOIN detailed_agreements ON agreements.agreement_id = detailed_agreements.agreement_id 
+	WHERE agreements.customer_id = id;
+	SET foreign_key_checks = 1;
+    
+    DELETE FROM customers
+	WHERE customer_id = id;
+END //
+delimiter ;
+
+CALL delete_customer(14);
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 23 ------------------------- */
+
+delimiter //
+create function check_valid_id(
+		id int,
+        `table_name` varchar(50)
+)
+returns bool
+deterministic
+begin
+end //
+delimiter ;
+    
+
+drop procedure if exists add_new_agreement;
+
+delimiter //
+create procedure add_new_agreement(employee_id int, customer_id int, service_id int,
+	starting_date date, ending_date date, deposit double, total_money double)
+begin
+	-- get the next id for new agreement.
+    declare next_agreement_id int;
+    set next_agreement_id = (select
+		max(agreement_id)
+		from agreements) + 1;
+        
+	-- check parameter employee_id
+    
+end //
+delimiter ;
+
+call add_new_agreement();
+
 /* ----------------------------------------------------------- */
