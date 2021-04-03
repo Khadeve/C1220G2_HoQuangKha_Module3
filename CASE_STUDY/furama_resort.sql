@@ -193,6 +193,13 @@ CREATE TABLE agreements (
         REFERENCES services (service_id)
 );
 
+alter table agreements
+	drop foreign key fk_service;
+    
+alter table agreements
+	add constraint fk_service
+    foreign key (service_id) references services(service_id) on delete cascade;
+
 INSERT INTO agreements VALUES
 	(1, 1, 1, 1, '2021-03-20', '2021-03-25', 250, 1250),
 	(2, 2, 2, 2, '2021-03-20', '2021-04-20', 1000, 9000),
@@ -221,10 +228,17 @@ CREATE TABLE detailed_agreements (
     extra_service_id INT,
     amount INT NOT NULL,
     CONSTRAINT fk_agreement FOREIGN KEY (agreement_id)
-        REFERENCES agreements (agreement_id),
+        REFERENCES agreements (agreement_id) ON DELETE CASCADE,
     CONSTRAINT fk_extra_service FOREIGN KEY (extra_service_id)
         REFERENCES extra_services (extra_service_id)
 );
+
+alter table detailed_agreements
+	drop foreign key fk_agreement;
+    
+alter table detailed_agreements
+	add constraint fk_agreement
+    foreign key (agreement_id) references agreements(agreement_id) on delete cascade;
 
 INSERT INTO detailed_agreements VALUES
 	(1, 1, 4, 1),
@@ -280,40 +294,21 @@ WHERE
 INSERT INTO customers VALUES
 	(7, 5, 'Duc Hau', '1997-10-10', '011 017 017', '0910012456', 'ducHau@gmail.com', 'Da Nang'),
 	(8, 5, 'Nha', '1995-03-25', '011 018 018', '0910012345', 'NhaMeo@gmail.com', 'Binh Dinh');
-    
-DROP TABLE IF EXISTS bookings;
-CREATE TABLE bookings (
-    booking_id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id INT,
-    service_id INT,
-    CONSTRAINT fk_bookings_customer_id FOREIGN KEY (customer_id)
-        REFERENCES customers (customer_id),
-    CONSTRAINT fk_bookings_service_id FOREIGN KEY (service_id)
-        REFERENCES services (service_id)
-);
-
-INSERT INTO bookings (customer_id, service_id) VALUES
-	(1, 1), (5, 2), (1, 2),
-    (7, 3), (8, 3), (5, 1),
-    (6, 2), (7, 1), (7, 2);
 
 SELECT 
-    customer_id, COUNT(customer_id) AS number_of_bookings
+    c.customer_id,
+    c.full_name,
+    toc.type_of_customer,
+    COUNT(a.customer_id) AS number_of_bookings
 FROM
-    bookings
-GROUP BY customer_id;
-
-SELECT 
-    bookings.customer_id,
-    customers.full_name,
-    COUNT(bookings.customer_id) AS number_of_bookings
-FROM
-    bookings
+    agreements a
         INNER JOIN
-    customers ON (bookings.customer_id = customers.customer_id
-        AND customers.type_of_customer_id = 5)
-GROUP BY bookings.customer_id
-ORDER BY COUNT(bookings.customer_id);
+    customers c ON a.customer_id = c.customer_id
+		INNER JOIN
+	types_of_customers toc ON toc.type_of_customer_id = c.type_of_customer_id
+    WHERE toc.type_of_customer_id = 5
+	GROUP BY c.customer_id
+	ORDER BY COUNT(a.customer_id);
 /* -------------------------------------------------- */
 
 /* ---------------------Task 5----------------------- */
@@ -892,4 +887,73 @@ delimiter ;
 
 set @number_of_services = count_specified_services(10000);
 select @number_of_services;
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 27b------------------------- */
+
+delimiter //
+create function find_longest_stay_period(cus_id int)
+	returns int
+    deterministic
+begin
+	declare longest_stay_period int default 0;
+    set longest_stay_period = (select
+		max(datediff(ending_date, starting_date))
+		from agreements
+        where customer_id = cus_id
+    );
+	
+    return longest_stay_period;
+end //
+delimiter ;
+
+set @customer_id = 1;
+select distinct customer_id, find_longest_stay_period(@customer_id) as longest_stay_period
+	from agreements
+    where customer_id = @customer_id;
+
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 28------------------------- */
+
+insert into services values
+	(1, 'Window', 65, 1, 3, 120, 2, 3, 'available'),
+	(5, 'Family', 120, 1, 4, 150, 2, 3, 'available');
+
+insert into agreements values
+	(1, 1, 1, 1, '2017-03-20', '2017-03-25', 250, 1250),
+    (9, 1, 5, 5, '2021-12-05', '2021-12-10', 200, 1000),
+	(10, 2, 3, 1, '2018-01-10', '2018-01-15', 250, 1200),
+	(11, 3, 4, 1, '2019-02-10', '2019-02-15', 300, 1500),
+	(13, 4, 2, 1, '2018-02-10', '2018-02-20', 300, 3000),
+	(16, 5, 1, 5, '2018-11-10', '2018-11-15', 500, 4500),
+	(18, 2, 4, 1, '2019-06-05', '2019-06-15', 100, 2000),
+	(21, 7, 5, 1, '2019-12-13', '2019-12-15', 500, 1500),
+	(23, 2, 10, 5, '2021-04-01', '2021-04-04', 100, 1000);
+    
+insert into detailed_agreements values
+	(1, 1, 4, 1),
+	(6, 1, 2, 1),
+	(8, 9, 1, 1),
+	(9, 11, 2, 2),
+	(10, 18, 1, 5);
+
+delimiter //
+create procedure delete_services()
+begin
+	delete from services
+	where service_id in (select * from
+		(select s.service_id
+		from ((services s
+		inner join types_of_services tos on s.type_of_service_id = tos.type_of_service_id)
+		inner join agreements a on s.service_id = a.service_id)
+		where tos.type_of_service = 'room' and (a.starting_date between '2015-01-01' and '2019-12-31')
+		group by s.service_id
+		order by s.service_id
+		) as t
+    );
+end //
+delimiter ;
+
+call delete_services();
 /* ----------------------------------------------------------- */
