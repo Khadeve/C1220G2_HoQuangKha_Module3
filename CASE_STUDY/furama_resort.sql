@@ -743,37 +743,153 @@ delimiter ;
 CALL delete_customer(14);
 /* ----------------------------------------------------------- */
 
-/* ------------------------- Task 23 ------------------------- */
+/* ------------------------- Task 24 ------------------------- */
+
+DROP FUNCTION IF EXISTS check_valid_id;
 
 delimiter //
-create function check_valid_id(
-		id int,
-        `table_name` varchar(50)
+CREATE FUNCTION check_valid_id(
+		id INT,
+        `table_name` VARCHAR(50)
 )
-returns bool
-deterministic
-begin
-end //
+RETURNS INT
+DETERMINISTIC
+BEGIN
+	DECLARE flag INT DEFAULT 0;
+   
+   IF (`table_name` = 'employees') THEN
+	SELECT
+		employee_id
+        INTO flag
+        FROM employees
+        WHERE employee_id = id;
+	ELSEIF (`table_name` = 'customers') THEN
+		SELECT
+			customer_id
+            INTO flag
+            FROM customers
+            WHERE customer_id = id;
+	ELSE
+		SELECT
+			service_id
+            INTO flag
+            FROM services
+            WHERE service_id = id;
+    END IF;
+        
+    RETURN flag;
+END //
 delimiter ;
-    
 
-drop procedure if exists add_new_agreement;
+DROP PROCEDURE IF EXISTS add_new_agreement;
 
 delimiter //
-create procedure add_new_agreement(employee_id int, customer_id int, service_id int,
-	starting_date date, ending_date date, deposit double, total_money double)
-begin
-	-- get the next id for new agreement.
-    declare next_agreement_id int;
-    set next_agreement_id = (select
-		max(agreement_id)
-		from agreements) + 1;
-        
-	-- check parameter employee_id
+CREATE PROCEDURE add_new_agreement(employee_id INT, customer_id INT, service_id INT,
+	starting_date DATE, ending_date DATE, deposit DOUBLE, total_money DOUBLE)
+BEGIN
+	
+    DECLARE next_agreement_id INT;
+    DECLARE is_valid_id INT;
+    DECLARE result VARCHAR(20) DEFAULT 'Success';
     
+    -- get the next id for new agreement.
+    SET next_agreement_id = (SELECT
+		MAX(agreement_id)
+		FROM agreements) + 1;
+        
+	-- check parameter ids
+    SET is_valid_id = CHECK_VALID_ID(employee_id, 'employees'); 
+    IF is_valid_id <> 0 THEN
+		SET is_valid_id = CHECK_VALID_ID(customer_id, 'customers');
+        
+        IF is_valid_id <> 0 THEN
+			SET is_valid_id = CHECK_VALID_ID(service_id, 'services');
+            
+            IF is_valid_id <> 0 THEN
+				INSERT INTO agreements VALUES
+					(next_agreement_id, employee_id, customer_id, service_id,
+                    starting_date, ending_date, deposit, total_money);
+            END IF;
+		END IF;
+	END IF;
+			
+	IF is_valid_id = 0 THEN
+		signal sqlstate '45000' set message_text = 'Adding new agreement fail';
+    END IF;
+    
+END //
+delimiter ;
+
+CALL add_new_agreement(-1, 10, 5, '2021-04-01', '2021-04-05', 100, 1000);
+
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 25 ------------------------- */
+SET @number_of_left_agreements = 0;
+
+DROP TRIGGER IF EXISTS after_agreements_delete;
+
+CREATE TRIGGER after_agreements_delete
+	AFTER DELETE
+    ON agreements FOR EACH ROW
+    SET @number_of_left_agreements = (SELECT
+    COUNT(agreement_id) FROM agreements);
+
+DELETE FROM agreements
+	WHERE agreement_id = 23;
+    
+SELECT @number_of_left_agreements;
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 26 ------------------------- */
+
+DROP TRIGGER IF EXISTS before_agreements_update;
+
+delimiter //
+CREATE TRIGGER before_agreements_update
+	BEFORE UPDATE
+	ON agreements FOR EACH ROW
+BEGIN
+	DECLARE error_message VARCHAR(255);
+    SET error_message = CONCAT('The new ending date ', new.ending_date, ' must be bigger than starting date ', old.starting_date, ' at least 2 days');
+	IF (DATEDIFF(new.ending_date, old.starting_date) < 2) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_message;
+	END IF;
+END //
+delimiter ;
+
+UPDATE agreements
+	SET ending_date = '2021-04-04'
+	WHERE agreement_id = 23;
+
+/* ----------------------------------------------------------- */
+
+/* ------------------------- Task 27a------------------------- */
+
+drop function if exists count_specified_services;
+
+delimiter //
+create function count_specified_services(revenue int)
+	returns int
+    deterministic
+begin
+	declare result int default 0;
+    
+    set result = (select 
+		count(service_id)
+        from (select
+			a.service_id
+			from agreements a
+			inner join services s on a.service_id = s.service_id
+			group by a.service_id
+			having sum(a.total_money) > revenue
+		) as nos
+    );
+
+    return result;
 end //
 delimiter ;
 
-call add_new_agreement();
-
+set @number_of_services = count_specified_services(10000);
+select @number_of_services;
 /* ----------------------------------------------------------- */
