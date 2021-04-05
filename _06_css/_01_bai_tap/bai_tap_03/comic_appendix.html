@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: lightskyblue;
+      }
+
+      h5 {
+        display: inline;
+      }
+
+      ol {
+        counter-reset: section;
+        list-style-type: none;
+        line-height: 2em;
+      }
+
+      li::before {
+        counter-increment: section;
+        content: counters(section, ".") ". ";
+      }
+
+      img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 40%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="coverImage">
+      <img src="image_folder/anh_bia_doraemon.jpg" alt="doreamon_cover_image" />
+    </div>
+    <h3>
+      <b>Appendix</b>
+    </h3>
+    <ol>
+      <li>
+        Nature Section
+        <ol>
+          <li>
+            <h5>
+              <a href="nobita_and_mountain.html" target="_blank"
+                >Nobita passes mountains</a
+              >
+            </h5>
+          </li>
+          <li>
+            <h5>
+              <a href="nobita_and_rivers.html" target="_blank"
+                >Nobita passes rivers</a
+              >
+            </h5>
+          </li>
+        </ol>
+      </li>
+      <li>
+        Friendship Section
+        <ol>
+          <li><h5>Doreamon helps Nobita</h5></li>
+          <li><h5>Doreamon helps Nobita's team</h5></li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</html>

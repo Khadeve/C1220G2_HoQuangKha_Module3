@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        a:link {
+            color: blue;
+        }
+
+        a:visited {
+            color: darkblue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        div.newPara {
+            text-indent: 3em;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            text-indent: 0;
+        }
+
+        .tooltip .tooltipImage {
+            display: none;
+            width: 10em;
+            height: auto;
+            background-color: black;
+            color: #fff;
+            border-radius: 6px;
+            top: 100%;
+            left: 50%;
+            margin-right: 5em;
+    
+            position: absolute;
+            z-index: 1;
+        }
+
+        .tooltip .tooltipImage::after {
+            content: " ";
+            position: absolute;
+            bottom: 100%;
+            left: 5%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent black transparent;
+        }
+
+        .tooltip:hover .tooltipImage {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Việt Nam</h1>
+    <hr>
+    <p><small>Bách khoa toàn thư mở Wikipedia</small></p>
+    <div class="newPara">
+        <p>
+            <strong>Việt Nam</strong>, tên gọi chính thức là <strong>Cộng hòa Xã hội chủ nghĩa Việt Nam</strong>, là quốc gia nằm ở cực phía Đông của
+            <a class="tooltip" href="https://vi.wikipedia.org/wiki/Bán_đảo_Đông_Dương" target="_blank">
+                bán đảo Đông Dương
+                <span class="tooltipImage">
+                    Bán đảo Đông Dương, hoặc gọi bán đảo Ấn - Trung, Đông Nam Á đất liền, là một bán đảo ở vào Đông Nam Á, là một trong ba bán đảo lớn ở phía nam châu Á. Vì nguyên do vị trí địa lí sát gần Ấn Độ và Trung Quốc, và lại bị sự ảnh hưởng của Ấn Độ và Trung Quốc, cho nên trên quốc tế gọi là Indochina. Bán đảo Đông Dương ngày nay bao gồm các quốc gia Myanmar, Thái Lan, Lào, Campuchia, Việt Nam và Malaysia bán đảo.
+                </span>
+            </a>
+            thuộc khu vực
+            <a href="https://vi.wikipedia.org/wiki/Đông_Nam_Á" target="_blank"> Đông Nam Á</a>
+            , giáp với
+            <a class="tooltip" href="https://vi.wikipedia.org/wiki/Lào">
+                 Lào
+                 <span class="tooltipImage">
+                    Lào, tên chính thức là Cộng hoà Dân chủ Nhân dân Lào, là quốc gia nội lục tại bán đảo Đông Dương, Đông Nam Á, phía tây bắc giáp với Myanmar và Trung Quốc, phía đông giáp với Việt Nam, phía đông nam giáp với Campuchia, phía tây và tây nam giáp với Thái Lan.
+                 </span>
+            </a>,
+            <a class="tooltip" href="https://vi.wikipedia.org/wiki/Campuchia">
+                 Campuchia
+                 <span class="tooltipImage">
+                    Campuchia, cũng còn gọi là Cao Miên hay Cam Bốt, là một quốc gia nằm trên bán đảo Đông Dương ở vùng Đông Nam Á. Campuchia giáp với vịnh Thái Lan ở phía tây nam, Thái Lan ở phía tây bắc, Lào ở phía đông bắc và Việt Nam ở phía đông.
+                 </span>
+            </a>,
+            <a href="https://vi.wikipedia.org/wiki/Trung_Quốc"> Trung Quốc</a>,
+            <a href="https://vi.wikipedia.org/wiki/Biển_Đông"> Biển Đông</a>, và
+            <a href="https://vi.wikipedia.org/wiki/Vịnh_Thái_Lan"> vinh Thái Lan</a>
+            Quốc gia này có chung đường biên giới trên biển với
+            <a href="https://vi.wikipedia.org/wiki/Thái_Lan"> Thái Lan</a>
+              qua vịnh Thái Lan và với Trung Quốc,
+            <a href="https://vi.wikipedia.org/wiki/Philippines"> Philippines</a>,
+            <a href="https://vi.wikipedia.org/wiki/Indonesia"> Indonesia</a>,
+            <a href="https://vi.wikipedia.org/wiki/Brunei"> Brunei</a>, và
+            <a href="https://vi.wikipedia.org/wiki/Malaysia"> Malaysia</a> qua Biển Đông.
+        </p>
+    </div>
+</body>
+</html>
