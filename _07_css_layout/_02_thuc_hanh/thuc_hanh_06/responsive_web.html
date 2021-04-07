@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive web design</title>
+
+    <style>
+        body {
+            margin: 0 auto;
+            font-family: Arial, Tahoma;
+        }
+
+        #s-body {
+            float: left;
+        }
+
+        #head, #head-link, #s-body, #footer {
+            width: 100%;
+            margin-bottom: 5px;
+            clear: both;
+        }
+
+        @media screen and (min-width: 1001px) {
+            body {
+                background-color: red;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            body {
+                background-color: green;
+            }
+        }
+
+        @media screen and (max-width: 750px) {
+            body {
+                background-color: blue;
+            }
+        }
+
+        @media screen and (max-width: 540px) {
+            body {
+                background-color: yellow;
+            }
+        }
+
+        @media screen and (max-width: 380px) {
+            body {
+                background-color: orange;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <div id="head"></div>
+      <div id="head-link"></div>
+      <div id="s-body">
+        <div id="left"></div>
+        <div id="content"></div>
+        <div id="right"></div>
+      </div>
+      <div id="footer"></div>
+    </div>
+  </body>
+</html>
