@@ -12,28 +12,30 @@
     <title>result</title>
 </head>
 <body>
-    <c:choose>
-        <c:when test="${operatorServlet eq 'plus'}">
-            <c:set var="result" scope="session">
-                ${firstOperandServlet + secondOperandServlet}
-            </c:set>
-        </c:when>
-        <c:when test="${operatorServlet eq 'subtract'}">
-            <c:set var="result" scope="session">
-                ${firstOperandServlet - secondOperandServlet}
-            </c:set>
-        </c:when>
-        <c:when test="${operatorServlet eq 'multiply'}">
-            <c:set var="result" scope="session">
-                ${firstOperandServlet * secondOperandServlet}
-            </c:set>
-        </c:when>
-        <c:otherwise>
-            <c:set var="result" scope="session">
-                ${firstOperandServlet / secondOperandServlet}
-            </c:set>
-        </c:otherwise>
-    </c:choose>
-    <h1>Result: <c:out value="${result}"/></h1>
+
+    <h1>Result: <c:out value="${calculatorResult}"/></h1>
+<%--    <c:choose>--%>
+<%--        <c:when test="${operatorServlet == 'plus'}">--%>
+<%--            <c:set var="result" scope="session">--%>
+<%--                ${firstOperandServlet + secondOperandServlet}--%>
+<%--            </c:set>--%>
+<%--        </c:when>--%>
+<%--        <c:when test="${operatorServlet == 'subtract'}">--%>
+<%--            <c:set var="result" scope="session">--%>
+<%--                ${firstOperandServlet - secondOperandServlet}--%>
+<%--            </c:set>--%>
+<%--        </c:when>--%>
+<%--        <c:when test="${operatorServlet == 'multiply'}">--%>
+<%--            <c:set var="result" scope="session">--%>
+<%--                ${firstOperandServlet * secondOperandServlet}--%>
+<%--            </c:set>--%>
+<%--        </c:when>--%>
+<%--        <c:otherwise>--%>
+<%--            <c:set var="result" scope="session">--%>
+<%--                ${firstOperandServlet / secondOperandServlet}--%>
+<%--            </c:set>--%>
+<%--        </c:otherwise>--%>
+<%--    </c:choose>--%>
+<%--    <h1>Result: <c:out value="${result}"/></h1>--%>
 </body>
 </html>

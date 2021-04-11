@@ -15,22 +15,43 @@
       <h2>Simple Calculator</h2>
       <fieldset style="width: 25%">
         <legend>Calculator</legend>
-        <label for="firstOperand">First Operand</label>
-        <input type="number" id="firstOperand" name="firstOperand">
-        <br><br>
-        <label for="operator">Operator:</label>
-        <select name="operator" id="operator">
-          <option value="plus">plus</option>
-          <option value="subtract">subtract</option>
-          <option value="multiply">multiply</option>
-          <option value="divide">divide</option>
-        </select>
-        <br><br>
-        <label for="firstOperand">First Operand</label>
-        <input type="number" id="secondOperand" name="secondOperand">
-        <br><br>
-
-        <input type="submit" value="Calculate">
+          <table>
+              <tr>
+                  <td>
+                      <label for="firstOperand">First Operand</label>
+                  </td>
+                  <td>
+                      <input type="number" id="firstOperand" name="firstOperand">
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <label for="operator">Operator:</label>
+                  </td>
+                  <td>
+                      <select id="operator" name="operator">
+                          <option value="plus">plus</option>
+                          <option value="subtract">subtract</option>
+                          <option value="multiply">multiply</option>
+                          <option value="divide">divide</option>
+                      </select>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <label for="secondOperand">Second Operand</label>
+                  </td>
+                  <td>
+                      <input type="number" id="secondOperand" name="secondOperand">
+                  </td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td>
+                      <input type="submit" value="Calculate">
+                  </td>
+              </tr>
+          </table>
       </fieldset>
     </form>
   </body>
