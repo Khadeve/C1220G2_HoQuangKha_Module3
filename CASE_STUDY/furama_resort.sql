@@ -854,7 +854,7 @@ END //
 delimiter ;
 
 UPDATE agreements
-	SET ending_date = '2021-04-04'
+	SET ending_date = '2021-04-02'
 	WHERE agreement_id = 23;
 
 /* ----------------------------------------------------------- */
